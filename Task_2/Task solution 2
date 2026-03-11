@@ -1,0 +1,116 @@
+
+REST API запрос для перехода на страницу со списком партнеров.
+Метод: GET
+Endpoint: /api/v1/partners
+Полный URL: https://petrushka-zelenaya.ru/api/v1/partners
+Заголовки:
+Accept: application/json
+Authorization: Bearer <user_token> - обязательный заголовок, тип - string
+User-Agent: PetrushkaZelenayaApp/1.0 (Android 16; Pixel 7)
+Host: petrushka-zelenaya.ru
+Accept-Language: ru
+
+GET /api/v1/partners?limit=4&offset=0&sort=name
+
+Параметры: (все параметры необязательны)
+•	limit— количество магазинов в ответе (по умолчанию: 4); 
+•	offset — смещение для пагинации (по умолчанию: 0);
+•	sort — поле для сортировки (name- название магазина, time- время доставки, price – стоимость доставки; по умолчанию по name)
+•	order— порядок сортировки (по умолчанию по возрастанию – asc, по уменьшению – desc)
+
+Пример запроса:
+GET https://petrushka-zelenaya.ru/api/v1/partners?limit=4&offset=0&sort=name&order=desc 
+HTTP/1.1
+Host: petrushka-zelenaya.ru
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJr36PNDH7
+User-Agent: PetrushkaZelenayaApp/1.0 (Android 16; Pixel 7)
+
+
+
+Что нужно сделать:
+Привести пример ответа этого REST API в соответствии с макетом. Формат - JSON. Учесть, что при клике на плашку магазина должен осуществляться переход по ссылке на внешний ресурс.
+Пример успешного ответа REST API (JSON)
+Код и статус ответа 
+HTTP/1.1 200 ОК
+{
+  "data_partners": [
+    {
+      "id": 1,
+      "name": "METRO",
+      "logo_url": "https://petrushka.ru/logos/metro.png",
+      "delivery_type": "Ближайшая доставка",
+      "delivery_time_text": "сегодня 21:00- 23:00",
+      "external_url": https://metro-cc.ru,
+      "action_type": "open_external_link"
+    },
+    {
+      "id": 2,
+      "name": "Ашан",
+      "logo_url": "https://petrushka.ru/logos/ashan.png",
+      "delivery_type": "Ближайшая доставка",
+      "delivery_time_text": "сегодня 18:00- 20:00",
+"external_url": https://www.auchan.ru,
+      "action_type": "open_external_link"
+
+    },
+    {
+      "id": 3,
+      "name": "ВкусВилл",
+      "logo_url": "https://petrushka.ru/logos/vk_vill.png",
+      "delivery_type": "Быстрая доставка",
+      "delivery_time_text": "от 20 до 60 минут",
+"external_url":https://vkusvill.ru,
+      "action_type": "open_external_link"
+
+    },
+    {
+      "id": 4,
+      "name": "ВИКТОРИЯ",
+      "logo_url": "https://petrushka.ru/logos/viktoria.png",
+      "delivery_type": "Ближайшая доставка",
+      "delivery_time": "сегодня 17:00- 19:00",
+"external_url": https://Viktoriya,.ru,
+      "action_type": "open_external_link"
+
+    }
+  ],
+  "meta": {
+    "total_count_partners": 15,
+    "next_page": true
+  }
+}
+
+Краткое описание полей:
+•	id – идентификатор патрнера-магазина , тип - number
+•	data_partners [] – массив партнеров 
+•	name – название магазина – тип string
+•	logo_url- логотип магазина – тип string
+•	delivery_type – тип доставки (быстрая доставка или доставка к определенному времени) – тип string
+•	delivery_time – Дата и время доставки – тип string
+•	external_url – Ссылка для перехода – тип string
+•	action_type — тип действия при клике (открыть во встроенном браузере - open in the built-in browser или внешнем браузере - open_external_link) – тип string
+•	meta: Объект для управления пагинацией (содержит общее число магазинов-партнеров -  total_count_partners – тип string, next_page - флаг наличия следующей страницы – тип boolean).
+Пример неуспешного ответа REST API (JSON), если отсутствует обязательный заголовок Authorization:
+Код и статус ответа 
+HTTP/1.1 401 Unauthorized.
+{
+       "code": 401,
+       "message": "Unauthorized",
+   }
+
+Пример неуспешного ответа REST API (JSON), если ссылка на магазины партнеры была удалена:
+HTTP/1.1 404 Not found.
+{
+       "code": 404,
+       "message": "Not found"
+   }
+Пример неуспешного ответа REST API (JSON), если указан некорректный параметр:
+К примеру, некорректный параметр отображения ограничения количества магазинов на странице limit = -5 или спецсимвол, или null
+HTTP/1.1 404 Not found.
+{
+       "code": 400,
+       "message": "Bad request"
+   }
+
+
