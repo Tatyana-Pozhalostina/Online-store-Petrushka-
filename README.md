@@ -1,4 +1,4 @@
-# Online-store-Petrushka-
+# OnlinePetrushka
 Задание 1: Анализ требований
 
 Описание:
